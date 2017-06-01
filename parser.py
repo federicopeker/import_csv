@@ -248,26 +248,28 @@ class ParserCsv(object):
         finally:
             file_obj.seek(0, 0)
 
-    def get_estructura_archivo(self, base_datos_contactos):
+    #def get_estructura_archivo(self, base_datos_contactos):
+    def get_estructura_archivo(self, nombre_file):
         """
         Lee un archivo CSV y devuelve contenidos.
         """
 
-        file_obj = base_datos_contactos.archivo_importacion.file
-        workbook = csv.reader(file_obj, self._get_dialect(file_obj))
+       # file_obj = base_datos_contactos.archivo_importacion.file
+        with open(nombre_file) as file_obj:
+            workbook = csv.reader(file_obj, self._get_dialect(file_obj))
 
-        structure_dic = []
-        for i, row in enumerate(workbook):
-            if row:
-                structure_dic.append(row)
+            structure_dic = []
+            for i, row in enumerate(workbook):
+                if row:
+                    structure_dic.append(row)
 
-        if i < 3:
-            logger.warn("El archivo CSV seleccionado posee menos de 3 "
-                        "filas.")
+            if i < 3:
+                logger.warn("El archivo CSV seleccionado posee menos de 3 "
+                            "filas.")
             # raise OmlParserMinRowError("El archivo CSV posee menos de "
             #                                "3 filas")
-            print "El archivo CSV posee menos de 3 filas"
-        return structure_dic
+                print "El archivo CSV posee menos de 3 filas"
+            return structure_dic
 
 
 # =============================================================================
